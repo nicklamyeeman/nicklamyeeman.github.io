@@ -1,27 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dictée</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/Contact-Form-Clean.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="script.js"></script>
 </head>
+<body onload="onLoad()">
 
-<body>
-    <section class="contact-clean">
-        <form method="post">
-            <h2 class="text-center">Dictée Promo 2026</h2>
-            <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
-            <div class="mb-3"><input class="form-control is-invalid" type="email" name="email" placeholder="Email"></div>
-            <div class="mb-3"><textarea class="form-control" name="message" rows="14"></textarea></div>
-            <div class="mb-3"><button class="btn btn-primary" type="submit">SENd</button></div>
-        </form>
-    </section>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<h2 id="lotoquine">Lotoquine</h2>
+<h3 id="freedom">Freedom</h3>
+
+</br>
+
+<h4 id="my_grids">Mes grilles</h4>
+
+</br>
+
+<div id="grids">
+</div>
+
+<div id="numbers">
+</div>
+
+</br>
+
+<div id="form_grid">
+    <form name="add_grid" onsubmit="return validateGrid()" method="post">
+        <table class="grid">
+            <tr>
+                <td> <input type="text" name="num1"> </td>
+                <td> <input type="text" name="num2"> </td>
+                <td> <input type="text" name="num3"> </td>
+                <td> <input type="text" name="num4"> </td>
+                <td> <input type="text" name="num5"> </td>
+                <td> <input type="text" name="num6"> </td>
+                <td> <input type="text" name="num7"> </td>
+                <td> <input type="text" name="num8"> </td>
+                <td> <input type="text" name="num9"> </td>
+            </tr>
+            <tr>
+                <td> <input type="text" name="num10"> </td>
+                <td> <input type="text" name="num11"> </td>
+                <td> <input type="text" name="num12"> </td>
+                <td> <input type="text" name="num13"> </td>
+                <td> <input type="text" name="num14"> </td>
+                <td> <input type="text" name="num15"> </td>
+                <td> <input type="text" name="num16"> </td>
+                <td> <input type="text" name="num17"> </td>
+                <td> <input type="text" name="num18"> </td>
+            </tr>
+            <tr>
+                <td> <input type="text" name="num19"> </td>
+                <td> <input type="text" name="num20"> </td>
+                <td> <input type="text" name="num21"> </td>
+                <td> <input type="text" name="num22"> </td>
+                <td> <input type="text" name="num23"> </td>
+                <td> <input type="text" name="num24"> </td>
+                <td> <input type="text" name="num25"> </td>
+                <td> <input type="text" name="num26"> </td>
+                <td> <input type="text" name="num27"> </td>
+            </tr>
+        </table>
+        n°<input type="text" name="grid_id" placeholder="ex : 64133">
+        <input type="submit" value="Ajouter grille">
+    </form>
+</div>
+
+</br>
+
+<div id="form_number">
+    <form name="add_number" onsubmit="return validateForm()" method="post">
+        Numéro tiré : <input type="text" name="number" autofocus>
+        <input type="submit" value="Valider">
+    </form>
+</div>
+
+</br>
+
+<div id="clean_buttons">
+    <button id="clean_grids" type="button">Nettoyer mes grilles</button>
+    <button id="delete_grids" type="button" onclick="clearLocalStorage()">Supprimer mes grilles</button>
+</div>
+
 </body>
-
 </html>
-
