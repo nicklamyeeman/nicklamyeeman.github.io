@@ -1,8 +1,17 @@
 function validateForm()
 {
-    var num = document.forms["add_number"]["number"].value;
-    console.log(num);
-    return false;
+    var new_number = document.forms["add_number"]["number"].value;
+    
+    /* Store new number in local storage */
+    var numbers = localStorage.getItem("numbers");
+
+    if (numbers == null)
+        numbers = [new_number];
+    else {
+        numbers = JSON.parse(numbers);
+        numbers[numbers.length] = new_number;
+    }
+    localStorage.setItem("numbers", JSON.stringify(numbers));
 }
 
 function validateGrid()
@@ -70,42 +79,67 @@ function validateGrid()
 
 function onLoad()
 {
-    /* Get grids from local storage */
+    console.log("LOAD");
+    /* Get grids and numbers from local storage */
     var grids = localStorage.getItem("grids");
+    var numbers = localStorage.getItem("numbers");
 
-    if (grids == null)
-        return;
-    grids = JSON.parse(grids);
+    if (grids != null) {
+        grids = JSON.parse(grids);
 
-    /* Create table in divs for each grid */
-    for (var i = 0; i != grids.length; i++) {
-        var div = document.createElement('div');
-        var table = document.createElement('table');
-        table.className = "grid";
+        /* Create table in divs for each grid */
+        for (var i = 0; i != grids.length; i++) {
+            var div = document.createElement('div');
+            var table = document.createElement('table');
+            table.className = "grid";
     
-        /* Add rows and cells for the table for each element of the grid */
-        for (var j = 0; j != 3; j++) {
-            var row = document.createElement('tr');
-            for (var k = 0; k != 9; k++) {
-                var cell = document.createElement('td');
-                cell.appendChild(document.createTextNode(""+grids[i][j][k]));
-                row.appendChild(cell);
+            /* Add rows and cells for the table for each element of the grid */
+            for (var j = 0; j != 3; j++) {
+                var row = document.createElement('tr');
+                for (var k = 0; k != 9; k++) {
+                    var cell = document.createElement('td');
+                    cell.appendChild(document.createTextNode(""+grids[i][j][k]));
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
             }
-            table.appendChild(row);
+            div.appendChild(table);
+    
+            /* Add a delete button to delete the grid */
+            var button = document.createElement('button');
+            button.className = "delete_button";
+            button.type = "button";
+            button.id = "" + i;
+            button.onclick = deleteGrid;
+            div.appendChild(button);
+    
+            /* Append child everything to the "grids" div */
+            document.getElementById("grids").appendChild(div);
         }
-        div.appendChild(table);
+    }    
+    if (numbers != null) {
+        numbers = JSON.parse(numbers);
 
-        /* Add a delete button to delete teh grid */
-        var button = document.createElement('button');
-        button.className = "delete_button";
-        button.type = "button";
-        button.id = "" + i;
-        button.onclick = deleteGrid;
-        div.appendChild(button);
-
-        /* Append child everything to the "grids" div */
-        document.getElementById("grids").appendChild(div);
-    }
+        /* Create p in divs for each grid */
+        for (var i = 0; i != numbers.length; i++) {
+            var div = document.createElement('div');
+            var p = document.createElement('p');
+            p.className = "number";
+            p.appendChild(document.createTextNode(""+numbers[i]));
+            div.appendChild(p);
+    
+            /* Add a delete button to delete the number */
+            var button = document.createElement('button');
+            button.className = "delete_button";
+            button.type = "button";
+            button.id = "" + i;
+            button.onclick = deleteNumber;
+            div.appendChild(button);
+    
+            /* Append child everything to the "numbers" div */
+            document.getElementById("numbers").appendChild(div);
+        }
+    }    
 }
 
 function deleteGrid()
@@ -120,10 +154,30 @@ function deleteGrid()
     location.reload();
 }
 
-function clearLocalStorage()
+function deleteNumber()
+{
+    /* id of the delete button corresponds to the number */
+    var to_del = this.id;
+    var numbers = localStorage.getItem("numbers");
+
+    numbers = JSON.parse(numbers);
+    numbers.splice(to_del, 1);
+    localStorage.setItem("numbers", JSON.stringify(numbers));
+    location.reload();
+}
+
+function clearNumbersStorage()
+{
+    if (confirm("Voulez-vous vraiment supprimer tous les numéros tirés ?")) {
+        localStorage.removeItem("numbers");
+        location.reload();
+    }
+}
+
+function clearGridsStorage()
 {
     if (confirm("Voulez-vous vraiment supprimer toutes vos grilles ?")) {
-        localStorage.clear();
+        localStorage.removeItem("grids");
         location.reload();
     }
 }
