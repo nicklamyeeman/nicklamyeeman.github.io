@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="script.js"></script>
+    <script src="scripts/forms.js"></script>
+    <script src="scripts/load.js"></script>
+    <script src="scripts/clear.js"></script>
 </head>
 <body onload="onLoad()">
 
@@ -26,40 +28,40 @@
     <form name="add_grid" onsubmit="return validateGrid()">
         <table class="grid">
             <tr>
-                <td> <input type="text" name="num1"> </td>
-                <td> <input type="text" name="num2"> </td>
-                <td> <input type="text" name="num3"> </td>
-                <td> <input type="text" name="num4"> </td>
-                <td> <input type="text" name="num5"> </td>
-                <td> <input type="text" name="num6"> </td>
-                <td> <input type="text" name="num7"> </td>
-                <td> <input type="text" name="num8"> </td>
-                <td> <input type="text" name="num9"> </td>
+                <td> <input type="number" name="num1" min="01" max="09"> </td>
+                <td> <input type="number" name="num2" min="10" max="19"> </td>
+                <td> <input type="number" name="num3" min="20" max="29"> </td>
+                <td> <input type="number" name="num4" min="30" max="39"> </td>
+                <td> <input type="number" name="num5" min="40" max="49"> </td>
+                <td> <input type="number" name="num6" min="50" max="59"> </td>
+                <td> <input type="number" name="num7" min="60" max="69"> </td>
+                <td> <input type="number" name="num8" min="70" max="79"> </td>
+                <td> <input type="number" name="num9" min="80" max="90"> </td>
             </tr>
             <tr>
-                <td> <input type="text" name="num10"> </td>
-                <td> <input type="text" name="num11"> </td>
-                <td> <input type="text" name="num12"> </td>
-                <td> <input type="text" name="num13"> </td>
-                <td> <input type="text" name="num14"> </td>
-                <td> <input type="text" name="num15"> </td>
-                <td> <input type="text" name="num16"> </td>
-                <td> <input type="text" name="num17"> </td>
-                <td> <input type="text" name="num18"> </td>
+                <td> <input type="number" name="num10" min="01" max="09"> </td>
+                <td> <input type="number" name="num11" min="10" max="19"> </td>
+                <td> <input type="number" name="num12" min="20" max="29"> </td>
+                <td> <input type="number" name="num13" min="30" max="39"> </td>
+                <td> <input type="number" name="num14" min="40" max="49"> </td>
+                <td> <input type="number" name="num15" min="50" max="59"> </td>
+                <td> <input type="number" name="num16" min="60" max="69"> </td>
+                <td> <input type="number" name="num17" min="70" max="79"> </td>
+                <td> <input type="number" name="num18" min="80" max="90"> </td>
             </tr>
             <tr>
-                <td> <input type="text" name="num19"> </td>
-                <td> <input type="text" name="num20"> </td>
-                <td> <input type="text" name="num21"> </td>
-                <td> <input type="text" name="num22"> </td>
-                <td> <input type="text" name="num23"> </td>
-                <td> <input type="text" name="num24"> </td>
-                <td> <input type="text" name="num25"> </td>
-                <td> <input type="text" name="num26"> </td>
-                <td> <input type="text" name="num27"> </td>
+                <td> <input type="number" name="num19" min="01" max="09"> </td>
+                <td> <input type="number" name="num20" min="10" max="19"> </td>
+                <td> <input type="number" name="num21" min="20" max="29"> </td>
+                <td> <input type="number" name="num22" min="30" max="39"> </td>
+                <td> <input type="number" name="num23" min="40" max="49"> </td>
+                <td> <input type="number" name="num24" min="50" max="59"> </td>
+                <td> <input type="number" name="num25" min="60" max="69"> </td>
+                <td> <input type="number" name="num26" min="70" max="79"> </td>
+                <td> <input type="number" name="num27" min="80" max="90"> </td>
             </tr>
         </table>
-        n°<input type="text" name="grid_id" placeholder="ex : 64133">
+        n°<input type="number" name="grid_id" placeholder="ex : 64133" min="10000" max="99999">
         <input type="submit" value="Ajouter grille">
     </form>
 </div>
@@ -68,7 +70,7 @@
 
 <div id="form_number">
     <form name="add_number" onsubmit="return validateForm()">
-        Numéro tiré : <input type="text" name="number" autofocus>
+        Numéro tiré : <input type="number" name="number" min="01" max="90" autofocus>
         <input type="submit" value="Valider">
     </form>
 </div>
