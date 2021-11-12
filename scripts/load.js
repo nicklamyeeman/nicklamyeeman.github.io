@@ -2,33 +2,65 @@ function onLoad()
 {
     loadNumbers();
     loadGrids();
+    checkGrids();
+}
+
+function checkGrids()
+{
+    var grids = document.getElementById("grids").getElementsByTagName('div');
+
+    for (var g = 0; g != grids.length; g++) {
+        var table_id = grids[g].childNodes[1].innerText;
+        var table_cells = grids[g].childNodes[0].getElementsByTagName('td');
+        var full = true;
+        for (tc = 0; tc != table_cells.length; tc++) {
+            if (table_cells[tc].innerText != "" && table_cells[tc].className == "white")
+                full = false;
+        }
+        if (full) {
+            alert("GRILLE " + table_id + " TERMINEE !");
+        }
+    }
 }
 
 function loadGrids()
 {
     var grids = localStorage.getItem("grids");
+    var gridsid = localStorage.getItem("gridsid");
 
     if (grids == null ||grids.length <= 0)
         return;
+    if (gridsid == null ||gridsid.length <= 0)
+        return;
     grids = JSON.parse(grids);
+    gridsid = JSON.parse(gridsid);
     
     /* Create table in divs for each grid */
     for (var i = 0; i != grids.length; i++) {
         var div = document.createElement('div');
+        div.className = "grid";
+
         var table = document.createElement('table');
-        table.className = "grid";
+        
+        var pid = document.createElement('p');
+        pid.appendChild(document.createTextNode(gridsid[i]));
 
         /* Add rows and cells for the table for each element of the grid */
         for (var j = 0; j != 3; j++) {
             var row = document.createElement('tr');
             for (var k = 0; k != 9; k++) {
                 var cell = document.createElement('td');
-                cell.appendChild(document.createTextNode(""+grids[i][j][k]));
+                cell.appendChild(document.createTextNode(grids[i][j][k]));
+                if (matchNumber(grids[i][j][k]))
+                    cell.className = "green";
+                else
+                    cell.className = "white";
                 row.appendChild(cell);
             }
             table.appendChild(row);
         }
         div.appendChild(table);
+        div.appendChild(pid);
 
         /* Add a delete button to delete the grid */
         var button = document.createElement('button');
@@ -43,6 +75,20 @@ function loadGrids()
     }
 }
 
+function matchNumber(cell_value)
+{
+    var numbers = localStorage.getItem("numbers");
+
+    if (numbers == null || numbers.lenght <= 0)
+        return false;
+    numbers = JSON.parse(numbers);
+
+    for (var n = 0; n != numbers.length; n++)
+        if (numbers[n] == cell_value)
+            return true;
+    return false;
+}
+
 function loadNumbers()
 {
     var numbers = localStorage.getItem("numbers");
@@ -54,9 +100,10 @@ function loadNumbers()
     /* Create p in divs for each grid */
     for (var i = 0; i != numbers.length; i++) {
         var div = document.createElement('div');
+        div.className = "number";
+
         var p = document.createElement('p');
-        p.className = "number";
-        p.appendChild(document.createTextNode(""+numbers[i]));
+        p.appendChild(document.createTextNode(numbers[i]));
         div.appendChild(p);
 
         /* Add a delete button to delete the number */

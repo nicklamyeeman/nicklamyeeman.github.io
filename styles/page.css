@@ -1,0 +1,45 @@
+#lotoquine {
+    text-align: center;
+}
+
+#freedom {
+    text-align: center;
+}
+
+#container {
+    display:flex;
+}
+
+#grids {
+    float:left;
+    width:60%;
+}
+
+#grids > div {
+    float:left;
+    width:30%
+}
+
+#numbers {
+    float:right;
+    width:40%;
+}
+
+#numbers > div {
+    float: left;
+    width:10%;
+}
+
+#form_grid {
+
+}
+
+#form_number {
+    display: flex;
+    justify-content: center;
+}
+
+#clean_buttons {
+    display: flex;
+    justify-content: center;
+}

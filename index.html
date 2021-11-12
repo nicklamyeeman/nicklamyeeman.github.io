@@ -4,6 +4,11 @@
     <script src="scripts/forms.js"></script>
     <script src="scripts/load.js"></script>
     <script src="scripts/clear.js"></script>
+
+    <link rel="stylesheet" href="styles/page.css">
+    <link rel="stylesheet" href="styles/grid.css">
+    <link rel="stylesheet" href="styles/buttons.css">
+    <link rel="stylesheet" href="styles/numbers.css">
 </head>
 <body onload="onLoad()">
 
@@ -16,17 +21,21 @@
 
 </br>
 
-<div id="grids">
-</div>
+<div id="container">
 
-<div id="numbers">
+    <div id="grids">
+    </div>
+    
+    <div id="numbers">
+    </div>
+    
 </div>
 
 </br>
 
 <div id="form_grid">
     <form name="add_grid" onsubmit="return validateGrid()">
-        <table class="grid">
+        <table>
             <tr>
                 <td> <input type="number" name="num1" min="01" max="09"> </td>
                 <td> <input type="number" name="num2" min="10" max="19"> </td>
@@ -61,8 +70,8 @@
                 <td> <input type="number" name="num27" min="80" max="90"> </td>
             </tr>
         </table>
-        n°<input type="number" name="grid_id" placeholder="ex : 64133" min="10000" max="99999">
-        <input type="submit" value="Ajouter grille">
+        n°<input class="grid_id" type="number" name="grid_id" placeholder="ex : 64133" min="10000" max="99999">
+        <input class="submit" type="submit" value="Ajouter grille">
     </form>
 </div>
 
@@ -70,16 +79,22 @@
 
 <div id="form_number">
     <form name="add_number" onsubmit="return validateForm()">
-        Numéro tiré : <input type="number" name="number" min="01" max="90" autofocus>
-        <input type="submit" value="Valider">
+        Numéro tiré : <input class="num" type="number" name="number" min="01" max="90" autofocus>
+        <input class="submit" type="submit" value="Valider">
     </form>
 </div>
 
 </br>
 
 <div id="clean_buttons">
-    <button id="clean_grids" type="button" onclick="clearNumbersStorage()">Nettoyer mes grilles</button>
-    <button id="delete_grids" type="button" onclick="clearGridsStorage()">Supprimer mes grilles</button>
+    <button class="del_button" id="delete_grids" type="button" onclick="clearGridsStorage()">Supprimer mes grilles</button>
+    <button class="del_button" id="clean_grids" type="button" onclick="clearNumbersStorage()">Supprimer les numéros tirés</button>
+</div>
+
+</br>
+
+<div id="completed_grids">
+    <h4>Mes grilles complétées</h4>
 </div>
 
 </body>

@@ -1,0 +1,23 @@
+#grids > div > table {
+    background-color: magenta;
+}
+
+#form_grid > form > table {
+    background-color: magenta;
+}
+
+.green {
+    background-color: green;
+}
+
+.white {
+    background-color: grey;
+}
+
+.grid_id {
+    background-color: lightblue;
+}
+
+#grids > div > p {
+    background-color: lightgoldenrodyellow;
+}
