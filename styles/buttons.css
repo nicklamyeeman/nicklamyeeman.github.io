@@ -1,7 +1,34 @@
 .submit {
-    background-color: indianred;
 }
 
 .del_button {
-    background-color: lightpink;
+}
+
+.delete_button {
+    overflow: hidden;
+    position: relative;
+    border: none;
+    padding: 0;
+    width: 2em;
+    height: 2em;
+    background: transparent;
+    color: #1da1f2;
+    font: inherit;
+    text-indent: 100%;
+    cursor: pointer;
+}
+
+.delete_button:before, .delete_button:after {
+    position: absolute;
+    top: 15%;
+    left: calc(50% - .0625em);
+    width: .125em;
+    height: 70%;
+    transform: rotate(45deg);
+    background: currentColor;
+    content: ' ';
+}
+
+.delete_button:after {
+    transform: rotate(-45deg);
 }

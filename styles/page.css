@@ -1,9 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-1: #186cb8;
+    --color-2: #2a9a9f;
+    --color-3: #f1b211;
+    --color-4: #e83411;
+    --color-5: #f9002f;
+}
+
 #lotoquine {
+    font-family: system-ui;
+    font-size: 10vw;
+    font-weight: 900;
+
+    width: -webkit-min-content;
+    width: -moz-min-content;
+    margin: auto;
+    
+    text-transform: uppercase;
     text-align: center;
 }
 
 #freedom {
+    font-family: system-ui;
+    font-size: 3vw;
+    font-weight: 400;
+
+    transform: rotate(-8deg);
+
     text-align: center;
+}
+
+#my_grids {
+    font-family: system-ui;
+    font-size: 2vw;
+    font-weight: 400;
+}
+
+#completed_grids > h4 {
+    font-family: system-ui;
+    font-size: 2vw;
+    font-weight: 400;
 }
 
 #container {

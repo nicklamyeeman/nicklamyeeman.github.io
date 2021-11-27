@@ -2,6 +2,7 @@ function onLoad()
 {
     loadNumbers();
     loadGrids();
+    loadCompletedGrids();
     checkGrids();
 }
 
@@ -18,7 +19,7 @@ function checkGrids()
                 full = false;
         }
         if (full) {
-            alert("GRILLE " + table_id + " TERMINEE !");
+            console.log("GRILLE " + table_id + " TERMINEE !");
         }
     }
 }
@@ -28,9 +29,9 @@ function loadGrids()
     var grids = localStorage.getItem("grids");
     var gridsid = localStorage.getItem("gridsid");
 
-    if (grids == null ||grids.length <= 0)
+    if (grids == null || grids.length <= 0)
         return;
-    if (gridsid == null ||gridsid.length <= 0)
+    if (gridsid == null || gridsid.length <= 0)
         return;
     grids = JSON.parse(grids);
     gridsid = JSON.parse(gridsid);
@@ -72,6 +73,58 @@ function loadGrids()
 
         /* Append child everything to the "grids" div */
         document.getElementById("grids").appendChild(div);
+    }
+}
+
+function loadCompletedGrids()
+{
+    var completed_grids = localStorage.getItem("completed_grids");
+    var completed_gridsid = localStorage.getItem("completed_gridsid");
+
+    if (completed_grids == null || completed_grids.length <= 0)
+        return;
+    if (completed_gridsid == null || completed_gridsid.length <= 0)
+        return;
+    completed_grids = JSON.parse(completed_grids);
+    completed_gridsid = JSON.parse(completed_gridsid);
+    
+    /* Create table in divs for each grid */
+    for (var i = 0; i != completed_grids.length; i++) {
+        var div = document.createElement('div');
+        div.className = "grid";
+
+        var table = document.createElement('table');
+        
+        var pid = document.createElement('p');
+        pid.appendChild(document.createTextNode(completed_gridsid[i]));
+
+        /* Add rows and cells for the table for each element of the grid */
+        for (var j = 0; j != 3; j++) {
+            var row = document.createElement('tr');
+            for (var k = 0; k != 9; k++) {
+                var cell = document.createElement('td');
+                cell.appendChild(document.createTextNode(completed_grids[i][j][k]));
+                if (matchNumber(completed_grids[i][j][k]))
+                    cell.className = "green";
+                else
+                    cell.className = "white";
+                row.appendChild(cell);
+            }
+            table.appendChild(row);
+        }
+        div.appendChild(table);
+        div.appendChild(pid);
+
+        /* Add a delete button to delete the grid */
+        var button = document.createElement('button');
+        button.className = "delete_button";
+        button.type = "button";
+        button.id = "" + i;
+        button.onclick = deleteGrid;
+        div.appendChild(button);
+
+        /* Append child everything to the "completed_grids" div */
+        document.getElementById("completed_grids").appendChild(div);
     }
 }
 
