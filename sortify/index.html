@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {};
+        async function waitForSpotifyWebPlaybackSDKToLoad() {
+            return new Promise(resolve => {
+                if (window.Spotify) {
+                    resolve(window.Spotify);
+                } else {
+                    window.onSpotifyWebPlaybackSDKReady = () => {
+                        resolve(window.Spotify);
+                    };
+                }
+            });
+        };
+        async function waitUntilUserHasSelectedPlayer(sdk) {
+            return new Promise(resolve => {
+                let interval = setInterval(async () => {
+                    let state = await sdk.getCurrentState();
+                    if (state !== null) {
+                        resolve(state);
+                        clearInterval(interval);
+                    }
+                });
+            });
+        };
+        (async () => {
+            const {
+                Player
+            } = await waitForSpotifyWebPlaybackSDKToLoad();
+            const sdk = new Player({
+                name: "Web Playback SDK",
+                volume: 1.0,
+                getOAuthToken: callback => {
+                    callback("a58b0d2acc0a4ba3b02037fe967a5cea");
+                }
+            });
+            sdk.on("player_state_changed", state => {
+                // Update UI with playback state changes
+            });
+            let connected = await sdk.connect();
+            if (connected) {
+                let state = await waitUntilUserHasSelectedPlayer(sdk);
+                await sdk.resume();
+                await sdk.setVolume(0.5);
+                let {
+                    id,
+                    uri: track_uri,
+                    name: track_name,
+                    duration_ms,
+                    artists,
+                    album: {
+                        name: album_name,
+                        uri: album_uri,
+                        images: album_images
+                    }
+                } = state.track_window.current_track;
+                console.log(`You're listening to ${track_name} by ${artists[0].name}!`);
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
