@@ -68,6 +68,7 @@ var SpotifyWebApi = (function () {
       qs = qs.substring(0, qs.length - 1);
       url = url + '?' + qs;
     }
+    console.log(url);
     return url;
   };
 
@@ -292,7 +293,9 @@ var SpotifyWebApi = (function () {
   ) {
     var requestData = {
       url: _baseUri + '/me/tracks/contains',
-      params: { ids: trackIds.join(',') }
+      params: {
+        ids: trackIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -379,7 +382,9 @@ var SpotifyWebApi = (function () {
   ) {
     var requestData = {
       url: _baseUri + '/me/albums/contains',
-      params: { ids: albumIds.join(',') }
+      params: {
+        ids: albumIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -872,7 +877,9 @@ var SpotifyWebApi = (function () {
     var requestData = {
       url: _baseUri + '/playlists/' + playlistId + '/tracks',
       type: 'PUT',
-      postData: { uris: uris }
+      postData: {
+        uris: uris
+      }
     };
     return _checkParamsAndPerformRequest(requestData, {}, callback);
   };
@@ -933,7 +940,9 @@ var SpotifyWebApi = (function () {
   ) {
     var dataToBeSent = uris.map(function (uri) {
       if (typeof uri === 'string') {
-        return { uri: uri };
+        return {
+          uri: uri
+        };
       } else {
         return uri;
       }
@@ -942,7 +951,9 @@ var SpotifyWebApi = (function () {
     var requestData = {
       url: _baseUri + '/playlists/' + playlistId + '/tracks',
       type: 'DELETE',
-      postData: { tracks: dataToBeSent }
+      postData: {
+        tracks: dataToBeSent
+      }
     };
     return _checkParamsAndPerformRequest(requestData, {}, callback);
   };
@@ -970,7 +981,9 @@ var SpotifyWebApi = (function () {
   ) {
     var dataToBeSent = uris.map(function (uri) {
       if (typeof uri === 'string') {
-        return { uri: uri };
+        return {
+          uri: uri
+        };
       } else {
         return uri;
       }
@@ -1100,7 +1113,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getAlbums = function (albumIds, options, callback) {
     var requestData = {
       url: _baseUri + '/albums/',
-      params: { ids: albumIds.join(',') }
+      params: {
+        ids: albumIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -1138,7 +1153,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getTracks = function (trackIds, options, callback) {
     var requestData = {
       url: _baseUri + '/tracks/',
-      params: { ids: trackIds.join(',') }
+      params: {
+        ids: trackIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -1177,7 +1194,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getArtists = function (artistIds, options, callback) {
     var requestData = {
       url: _baseUri + '/artists/',
-      params: { ids: artistIds.join(',') }
+      params: {
+        ids: artistIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -1222,7 +1241,9 @@ var SpotifyWebApi = (function () {
   ) {
     var requestData = {
       url: _baseUri + '/artists/' + artistId + '/top-tracks',
-      params: { country: countryId }
+      params: {
+        country: countryId
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -1486,7 +1507,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getAudioFeaturesForTracks = function (trackIds, callback) {
     var requestData = {
       url: _baseUri + '/audio-features',
-      params: { ids: trackIds }
+      params: {
+        ids: trackIds
+      }
     };
     return _checkParamsAndPerformRequest(requestData, {}, callback);
   };
@@ -1630,7 +1653,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.play = function (options, callback) {
     options = options || {};
     var params =
-      'device_id' in options ? { device_id: options.device_id } : null;
+      'device_id' in options ? {
+        device_id: options.device_id
+      } : null;
     var postData = {};
     ['context_uri', 'uris', 'offset', 'position_ms'].forEach(function (field) {
       if (field in options) {
@@ -1662,9 +1687,12 @@ var SpotifyWebApi = (function () {
   Constr.prototype.queue = function (uri, options, callback) {
     options = options || {};
     var params =
-      'device_id' in options
-        ? { uri: uri, device_id: options.device_id }
-        : { uri: uri };
+      'device_id' in options ? {
+        uri: uri,
+        device_id: options.device_id
+      } : {
+        uri: uri
+      };
     var requestData = {
       type: 'POST',
       url: _baseUri + '/me/player/queue',
@@ -1686,7 +1714,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.pause = function (options, callback) {
     options = options || {};
     var params =
-      'device_id' in options ? { device_id: options.device_id } : null;
+      'device_id' in options ? {
+        device_id: options.device_id
+      } : null;
     var requestData = {
       type: 'PUT',
       url: _baseUri + '/me/player/pause',
@@ -1708,7 +1738,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.skipToNext = function (options, callback) {
     options = options || {};
     var params =
-      'device_id' in options ? { device_id: options.device_id } : null;
+      'device_id' in options ? {
+        device_id: options.device_id
+      } : null;
     var requestData = {
       type: 'POST',
       url: _baseUri + '/me/player/next',
@@ -1732,7 +1764,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.skipToPrevious = function (options, callback) {
     options = options || {};
     var params =
-      'device_id' in options ? { device_id: options.device_id } : null;
+      'device_id' in options ? {
+        device_id: options.device_id
+      } : null;
     var requestData = {
       type: 'POST',
       url: _baseUri + '/me/player/previous',
@@ -1882,7 +1916,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getShows = function (showIds, options, callback) {
     var requestData = {
       url: _baseUri + '/shows/',
-      params: { ids: showIds.join(',') }
+      params: {
+        ids: showIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -1969,7 +2005,9 @@ var SpotifyWebApi = (function () {
   ) {
     var requestData = {
       url: _baseUri + '/me/shows/contains',
-      params: { ids: showIds.join(',') }
+      params: {
+        ids: showIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
@@ -2026,7 +2064,9 @@ var SpotifyWebApi = (function () {
   Constr.prototype.getEpisodes = function (episodeIds, options, callback) {
     var requestData = {
       url: _baseUri + '/episodes/',
-      params: { ids: episodeIds.join(',') }
+      params: {
+        ids: episodeIds.join(',')
+      }
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };

@@ -5,13 +5,14 @@
     <title>
         Sortify
     </title>
-    <script src="scripts/sort.js"></script>
+    <script src="scripts/spotify-connect.js"></script>
+    <script src="scripts/playlist-sort.js"></script>
     <script src="scripts/spotify-web-api.js"></script>
 </head>
-<body>
+<body onload="onLoad()">
     <div>
-        <button onclick="connectSpotify()">
-            connect Spotify
+        <button onclick="getPlaylist()">
+            Load Playlist info
         </button>
     </div>
 </body>
