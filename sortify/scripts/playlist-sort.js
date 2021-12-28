@@ -1,16 +1,45 @@
+function fillPlaylist(playlist, offset, spotifyApi)
+{
+    const fill_playlist = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const opt = new Object();
+            opt.offset = offset;
+
+            spotifyApi.getPlaylistTracks("3riXgB8dCeuM4LnUXOX0cy", opt, function(err, data) {
+                if (err)
+                    reject(err);
+                else {
+                    resolve(data);
+                }
+            })
+        }, 100);
+    });
+
+    fill_playlist.then((data) => {
+        data.items.forEach(element => {
+            playlist.push(element.track);
+        });
+        if (data.total > offset) {
+            offset += 100;
+            fillPlaylist(playlist, offset, spotifyApi);
+        }
+        return (playlist);
+    });
+}
+
 function playlistRequest(spotifyApi)
 {
-    spotifyApi.getPlaylistTracks("3riXgB8dCeuM4LnUXOX0cy", (data) = function(err, data) {
-        if (err)
-            console.error(err);
-        else {
-            var playlistLen = data.total;
-            var tracksNames = [];
-            data.items.forEach(element => {
-                tracksNames.push(element.track.name + " - " + element.track.artists[0].name)
-            });
-            console.log(tracksNames);
-        }
+    var playlist = [];
+
+    const playlist_request = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            playlist = fillPlaylist(playlist, 0, spotifyApi);
+        }, 100);
+        resolve(playlist);
+    });
+
+    playlist_request.then((data) => {
+        console.log(data);
     });
 }
 
