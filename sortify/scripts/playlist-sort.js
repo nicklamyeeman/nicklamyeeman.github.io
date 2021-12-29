@@ -1,46 +1,29 @@
+//var playlistID = "5T3vz9WJ41rjOOpJ6AAURV"
+var playlistID = "3riXgB8dCeuM4LnUXOX0cy"
+
+const fillPromise = (err, data) => new Promise((resolve, reject) => {
+    if (err)
+        reject(err);
+    else
+        resolve(data);
+}).then((data) => {
+    console.log(data);
+    return data;
+});
+
 function fillPlaylist(playlist, offset, spotifyApi)
 {
-    const fill_playlist = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const opt = new Object();
-            opt.offset = offset;
+    const opt = new Object();
+    opt.offset = offset;
 
-            spotifyApi.getPlaylistTracks("3riXgB8dCeuM4LnUXOX0cy", opt, function(err, data) {
-                if (err)
-                    reject(err);
-                else {
-                    resolve(data);
-                }
-            })
-        }, 100);
-    });
-
-    fill_playlist.then((data) => {
-        data.items.forEach(element => {
-            playlist.push(element.track);
-        });
-        if (data.total > offset) {
-            offset += 100;
-            fillPlaylist(playlist, offset, spotifyApi);
-        }
-        return (playlist);
-    });
+    spotifyApi.getPlaylistTracks(playlistID, opt, fillPromise);
 }
 
 function playlistRequest(spotifyApi)
 {
     var playlist = [];
 
-    const playlist_request = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            playlist = fillPlaylist(playlist, 0, spotifyApi);
-        }, 100);
-        resolve(playlist);
-    });
-
-    playlist_request.then((data) => {
-        console.log(data);
-    });
+    playlist = fillPlaylist(playlist, 0, spotifyApi);
 }
 
 function getPlaylist()

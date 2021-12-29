@@ -68,7 +68,6 @@ var SpotifyWebApi = (function () {
       qs = qs.substring(0, qs.length - 1);
       url = url + '?' + qs;
     }
-    console.log(url);
     return url;
   };
 
