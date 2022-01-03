@@ -1,4 +1,4 @@
-function setAccesstoken()
+function onLoad()
 {
     var data = "grant_type=client_credentials";
 
@@ -19,9 +19,4 @@ function setAccesstoken()
      **  xhr.setRequestHeader("Cookie", "__Host-device_id=AQB5MM_VrrlXFNDXUpktnPXGUTDVhbS1E8oXsJz-NuRx0mZuZ0cH8zab52IJb0FVDAQb5R3Pl-xk9AvxtXImNWHsaGxMop0tBSw; sp_tr=false");
      */
     xhr.send(data);
-}
-
-function onLoad()
-{
-    setAccesstoken();
 }
