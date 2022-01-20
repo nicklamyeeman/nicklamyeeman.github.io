@@ -1,11 +1,11 @@
-var playlistID = "61f45XS8TkadYTBC6Kokrm"
+// var playlistID = "61f45XS8TkadYTBC6Kokrm"
 //var playlistID = "3riXgB8dCeuM4LnUXOX0cy"
 var offset = 0;
 var it = 1;
 
-function updateLocalStorage(element)
+function updateLocalStorage(element, playlistID)
 {
-    var ls = localStorage.getItem("playlist-json");
+    var ls = localStorage.getItem("playlist-" + playlistID);
     var psize = document.getElementById("playlist-size");
 
     var jsontext = "\"" + it + "\" : { \"track-id\" : \"" + element.track.id + "\", \"score\" : \"0\" } ";
@@ -14,37 +14,32 @@ function updateLocalStorage(element)
         jsontext += ",";
     else
         jsontext += "}";
+        ls += jsontext;
 
-    ls += jsontext;
     localStorage.setItem("playlist-"+playlistID, ls);
 }
 
-function updateHTML(element)
+function updateHTML(element, sc)
 {
-    /* create ligne of the table */
+    /* CREATE HTML ELEMENTS */
     var tr = document.createElement('tr');
     var num = document.createElement('td');
     var name = document.createElement('td');
     var artists = document.createElement('td');
     var score = document.createElement('td');
 
-    /* position number in playlist */
+    /* FILL HTML ELEMENTS */
     num.innerHTML = it;
-
-    /* title */
-    name.innerHTML = element.track.name;
-
-    /* artists */
-    element.track.artists.forEach(artist => {
+    name.innerHTML = element.name;
+    element.artists.forEach(artist => {
         if (artists.innerHTML == "")
             artists.innerHTML = artist.name;
         else
             artists.innerHTML += ", " + artist.name;
     })
-    /* score */
-    score.innerHTML = "0";
+    score.innerHTML = sc;
     
-    /* push ligne of the table */
+    /* APPEND HTML ELEMENTS */
     tr.appendChild(num);
     tr.appendChild(name);
     tr.appendChild(artists);
@@ -52,34 +47,27 @@ function updateHTML(element)
     return tr;
 }
 
-function fillPlaylistTracks(plist, spotifyApi)
+function fillPlaylistTracks(plist, spotifyApi, playlistID)
 {
-    /* create options for offset in request */
     const opt = new Object();
     opt.offset = offset;
 
-    /* request */
     spotifyApi.getPlaylistTracks(playlistID, opt, (err, data) => new Promise((resolve, reject) => {
         if (err)
             reject(err);
         else
             resolve(data.items);
     }).then((items) => {
-        /* push each song in the table */
         items.forEach(element => {
-            console.log(element);
-            /* change the HTML */
-            plist.appendChild(updateHTML(element));
-            /* change the LocalStorage */
-            updateLocalStorage(element);
+            plist.appendChild(updateHTML(element.track, "0"));
+            updateLocalStorage(element, playlistID);
             it += 1;
         });
     }));
 }
 
-function getPlaylistSize(spotifyApi, playlistSize)
+function getPlaylistSize(spotifyApi, playlistSize, playlistID)
 {
-    /* create options */
     const opt = new Object();
     opt.offset = 0;
 
@@ -89,40 +77,94 @@ function getPlaylistSize(spotifyApi, playlistSize)
         else
             resolve(data.total);
     }).then((total) => {
-        /* change the tag p with the size of the playlist */
         playlistSize.innerHTML = total;
     }));
 }
 
-function getPlaylist()
+function getPlaylistID()
 {
-    /* create a SpotifyWebApi class to make request later*/
-    var spotifyApi = new SpotifyWebApi();
+    var input = document.getElementById("playlist-link");
 
-    /* set the access token */
-    spotifyApi.setAccessToken(localStorage.getItem("accessToken"));
+    /* parse if needed */
+        /* TO DO */
 
-    /* get the tag p and table to modify next */
+    return input.value;
+}
+
+function newPlaylist(playlistID, spotifyApi)
+{
+    /* SET LOCAL STORAGE */
+    localStorage.setItem("playlist-"+playlistID, "{");
+
+    /* GET HTML FOR SIZE AND TABLE OF SONGS */
     var psize = document.getElementById("playlist-size");
     var plist = document.getElementById("playlist-list");
 
-    /* listen the tag p when modified */
+    /* EVENT WHEN MODIFY PLAYLIST SIZE */
     psize.addEventListener('DOMSubtreeModified', function() {
-        fillPlaylistTracks(plist, spotifyApi);
-    })
+         fillPlaylistTracks(plist, spotifyApi, playlistID);
+    });
     
-    /* listen the tag table when modified */
+    /* EVENT WHEN MODIFY PLAYLIST LIST */
     plist.addEventListener('DOMSubtreeModified', function() {
         if (psize.innerHTML > offset && it % 100 == 0) {
             offset += 100;
-            fillPlaylistTracks(plist, spotifyApi);
+            fillPlaylistTracks(plist, spotifyApi, playlistID);
         }
-    })
+    });
 
-    /* reset local storage content */
-    localStorage.removeItem("playlist-"+playlistID);
-    localStorage.setItem("playlist-"+playlistID, "{");
+    /* GET PLAYLIST SIZE */
+    getPlaylistSize(spotifyApi, psize, playlistID);
+}
 
-    /* get size of the playlist */
-    getPlaylistSize(spotifyApi, psize);
+function getMyTrack(plist, spotifyApi, trackID, score)
+{
+    spotifyApi.getTrack(trackID, (err, data) => new Promise((resolve, reject) => {
+        if (err)
+            reject(err);
+        else
+            resolve(data);
+    }).then((data) => {
+        plist.appendChild(updateHTML(data, score));
+    }));
+}
+
+function loadPlaylist(playlist, playlistID, spotifyApi)
+{
+    /* PARSE LOCAL STORAGE */
+    var playlist = JSON.parse(playlist);
+
+    /* GET HTML FOR SIZE AND TABLE OF SONGS */
+    var psize = document.getElementById("playlist-size");
+    var plist = document.getElementById("playlist-list");
+
+    /* EVENT WHEN MODIFY PLAYLIST SIZE */
+    psize.addEventListener('DOMSubtreeModified', function() {
+        getMyTrack(plist, spotifyApi, playlist[it]["track-id"], playlist[it]["score"]);
+    });
+
+    plist.addEventListener('DOMSubtreeModified', function() {
+        it += 1;
+        getMyTrack(plist, spotifyApi, playlist[it]["track-id"], playlist[it]["score"]);
+    });
+
+    /* GET PLAYLIST SIZE */
+    getPlaylistSize(spotifyApi, psize, playlistID);
+}
+
+function getPlaylist()
+{
+    /* GET PLAYLSIT ID */
+    var playlistID = getPlaylistID();
+
+    /* SETUP API + ACCESS TOKEN */
+    var spotifyApi = new SpotifyWebApi();
+    spotifyApi.setAccessToken(localStorage.getItem("accessToken"));
+
+    /* CEHCK IF PLAYLSIT ALREADY TREATED */
+    var playlist = localStorage.getItem("playlist-" + playlistID);
+    if (playlist === null)
+        newPlaylist(playlistID, spotifyApi);
+    else
+        loadPlaylist(playlist, playlistID, spotifyApi);
 }

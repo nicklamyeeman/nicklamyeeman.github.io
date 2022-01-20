@@ -1156,6 +1156,7 @@ var SpotifyWebApi = (function () {
         ids: trackIds.join(',')
       }
     };
+    console.log(requestData.url);
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
 

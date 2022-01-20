@@ -11,9 +11,12 @@
 </head>
 <body onload="onLoad()">
     <div>
-        <button onclick="getPlaylist()">
-            Load Playlist
-        </button>
+        <div id="load-playlist">
+            <input id="playlist-link"/>
+            <button onclick="getPlaylist()">
+                Load Playlist
+            </button>
+        </div>
         <p id="playlist-size"></p>
 
         <table id="playlist-list">
@@ -26,7 +29,7 @@
         </table>
         <br/>
         <button>
-            Update Playlist
+             Start Tournament
         </button>
     </div>
 </body>
