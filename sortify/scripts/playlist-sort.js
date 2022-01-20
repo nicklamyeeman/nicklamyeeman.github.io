@@ -117,15 +117,18 @@ function newPlaylist(playlistID, spotifyApi)
     getPlaylistSize(spotifyApi, psize, playlistID);
 }
 
-function getMyTrack(plist, spotifyApi, trackID, score)
+function getMyTracks(plist, spotifyApi, tracksID, scores)
 {
-    spotifyApi.getTrack(trackID, (err, data) => new Promise((resolve, reject) => {
+    spotifyApi.getTracks(tracksID, (err, data) => new Promise((resolve, reject) => {
         if (err)
             reject(err);
         else
             resolve(data);
     }).then((data) => {
-        plist.appendChild(updateHTML(data, score));
+        for (let i = 0; i != data.tracks.length; i++) {
+            plist.appendChild(updateHTML(data.tracks[i], scores[i]));
+            it += 1;
+        }
     }));
 }
 
@@ -140,12 +143,25 @@ function loadPlaylist(playlist, playlistID, spotifyApi)
 
     /* EVENT WHEN MODIFY PLAYLIST SIZE */
     psize.addEventListener('DOMSubtreeModified', function() {
-        getMyTrack(plist, spotifyApi, playlist[it]["track-id"], playlist[it]["score"]);
+        var tracks =[]
+        var scores = [];
+        for (let i = it; i != it + 50; i++) {
+            tracks.push(playlist[i]["track-id"]);
+            scores.push(playlist[i]["score"]);
+        }
+        getMyTracks(plist, spotifyApi, tracks, scores);
     });
 
     plist.addEventListener('DOMSubtreeModified', function() {
-        it += 1;
-        getMyTrack(plist, spotifyApi, playlist[it]["track-id"], playlist[it]["score"]);
+        if (it % 50 === 0) {
+            var tracks = [];
+            var scores = [];
+            for (let i = it; i < parseInt(psize.innerHTML) && i != it + 50; i++) {
+                tracks.push(playlist[i]["track-id"]);
+                scores.push(playlist[i]["score"]);
+            }
+            getMyTracks(plist, spotifyApi, tracks, scores);
+        }
     });
 
     /* GET PLAYLIST SIZE */
